@@ -59,12 +59,12 @@ class MultiHeadAttention(layers.Layer):
     def reshape(self, x, headers, flag):
         if flag:
             # x_shape: [batch, seq_length, d_k or d_v]
-            # reshape to: [batch, seq_length, headers, -1]
+            # reshape to: [batch, headers, seq_length, -1]
             x = tf.reshape(x, shape=[x.shape[0], x.shape[1], headers, -1])
             # Tensor shape after reshaping and transposing: [batch_size, heads, seq_length, -1]
             x = tf.transpose(x, perm=[0, 2, 1, 3])
         else:
-            # x_shape: [batch_size, heads, seq_length, -1]
+            # x_shape: [batch_size, headers, seq_length, -1]
             # transpose to: [batch, seq_length, heads, -1]
             x = tf.transpose(x, perm=[0, 2, 1, 3])
             # Reverting the reshaping and transposing operations: (batch_size, seq_length, d_v)
